@@ -13,11 +13,11 @@ export const menuURLs = [
   },
   {
     url: 'pool',
-    v2: false,
+    v2: true,
   },
   {
     url: 'farming',
-    v2: false,
+    v2: true,
   },
   {
     url: 'stake',
