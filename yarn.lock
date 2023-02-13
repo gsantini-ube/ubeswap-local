@@ -16127,10 +16127,10 @@ ua-parser-js@^1.0.2:
   resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-1.0.2.tgz#e2976c34dbfb30b15d2c300b2a53eac87c57a775"
   integrity sha512-00y/AXhx0/SsnI51fTc0rLRmafiGOM4/O+ny10Ps7f+j/b8p/ZY11ytMgznXkOVo4GQ+KwQG5UQLkLGirsACRg==
 
-ubeswap-header@^1.1.5:
-  version "1.1.5"
-  resolved "https://registry.yarnpkg.com/ubeswap-header/-/ubeswap-header-1.1.5.tgz#5d1c7de23272d7e73e65b8df123fbe84e60a4284"
-  integrity sha512-IEBFwJcNhR1twIQCssioqUuVQsQCXo9wFNZx+5NcmxT0Ztkrc81Ykq4ELLVPn23fj/lF2oK6ThCOIe4NqPN4Bw==
+ubeswap-header@^1.1.7:
+  version "1.1.7"
+  resolved "https://registry.yarnpkg.com/ubeswap-header/-/ubeswap-header-1.1.7.tgz#45e4e1941e08004d9cd037c15112dd4d01bd94be"
+  integrity sha512-umRJs5mZOjHdUG75u9fk16ScWIOJntz1quZWHSXm34JuIUJ4YrWh7CfMG75UIvhyLR+xlws1Wx0uc5xyYembKQ==
   dependencies:
     "@apollo/client" "^3.6.5"
     "@celo-tools/use-contractkit" "^3.1.0"

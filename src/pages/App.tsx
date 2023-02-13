@@ -1,8 +1,7 @@
 import { DappKitResponseStatus } from '@celo/utils'
 import { useContractKit } from '@celo-tools/use-contractkit'
 import { ErrorBoundary } from '@sentry/react'
-import { menuURLs } from 'constants/menuURLs'
-import React, { Suspense } from 'react'
+import React, { Suspense, useMemo } from 'react'
 import { Route, Switch, useHistory, useLocation } from 'react-router-dom'
 import { useDarkModeManager } from 'state/user/hooks'
 import styled from 'styled-components'
@@ -36,6 +35,10 @@ import { Stake } from './Stake'
 import AddProposal from './Stake/AddProposal'
 import Swap from './Swap'
 import { OpenClaimAddressModalAndRedirectToSwap, RedirectPathToSwapOnly, RedirectToSwap } from './Swap/redirects'
+import FarmBackground from 'assets/images/background-farm.jpg'
+import LimitOrderBackground from 'assets/images/background-limit-order.jpg'
+import PoolBackground from 'assets/images/background-pool.jpg'
+import StakeBackground from 'assets/images/background-stake.jpg'
 
 const AppWrapper = styled.div`
   display: flex;
@@ -56,22 +59,24 @@ const UbeswapHeaderWrapper = styled.div`
   width: 100%;
 `
 
-const BodyWrapper = styled.div`
+const BodyWrapper = styled.div<{ backgroundImg: string }>`
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding-top: 140px;
+  padding-top: 111px;
   align-items: center;
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  z-index: 10;
 
   ${({ theme }) => theme.mediaWidth.upToSmall`
-    padding: 16px;
+    padding: 87px 16px;
   `};
 
   z-index: 1;
+  background-image: ${(props) => `url(${props.backgroundImg})`};
+  background-size: cover;
+  background-repeat: no-repeat;
 `
 
 const Marginer = styled.div`
@@ -85,6 +90,21 @@ export default function App() {
   const curLocation = useLocation()
   const { address } = useContractKit()
   const [darkMode, toggleDarkMode] = useDarkModeManager()
+
+  const backgroundImg = useMemo(() => {
+    switch (curLocation.pathname) {
+      case '/farm':
+        return FarmBackground
+      case '/pool':
+        return PoolBackground
+      case '/limit-order':
+        return LimitOrderBackground
+      case '/stake':
+        return StakeBackground
+      default:
+        return FarmBackground
+    }
+  }, [curLocation.pathname])
 
   React.useEffect(() => {
     // Close window if search params from Valora redirect are present (handles Valora connection issue)
@@ -105,16 +125,12 @@ export default function App() {
     }
   }, [curLocation])
 
-  const handleNavChange = (menu: string) => {
-    const changedMenu = menuURLs.find((menuUrl) => menuUrl.url === menu)
-    console.log('handleNavChange', menu, changedMenu)
-    if (changedMenu) {
-      if (changedMenu.v2) {
-        const url = changedMenu.url === 'logo' ? '' : changedMenu.url
-        history.push(`/${url}`)
-      } else {
-        location.href = `${V3Url}/#/${changedMenu.url}`
-      }
+  const handleNavChange = (menu: string, version: number) => {
+    if (version === 2) {
+      const url = menu === 'logo' || menu === 'swap' ? '' : menu
+      history.push(`/${url}`)
+    } else {
+      location.href = `${V3Url}/#/${menu}`
     }
   }
 
@@ -139,8 +155,8 @@ export default function App() {
             darkMode={true}
             showToggleDarkMode={false}
             enableUrlWarning={false}
-            onNavChanged={(menu: string) => {
-              handleNavChange(menu)
+            onNavChanged={(menu: string, version: number) => {
+              handleNavChange(menu, version)
             }}
             onModeChanged={() => {
               handleModeChange()
@@ -151,7 +167,7 @@ export default function App() {
         {/* <HeaderWrapper>
           <Header />
         </HeaderWrapper> */}
-        <BodyWrapper>
+        <BodyWrapper backgroundImg={backgroundImg}>
           <Popups />
           <Polling />
           <ErrorBoundary fallback={<p>An unexpected error occured on this part of the page. Please reload.</p>}>
